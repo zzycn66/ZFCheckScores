@@ -18,7 +18,13 @@ def get_selected_courses(student_client):
             # 调用student_client的get_selected_courses方法获取已选课程信息
             selected_courses_data = student_client.get_selected_courses().get("data", {})
             selected_courses = selected_courses_data.get("courses", [])
-
+# 筛选出2024 - 2025学年第二学期的课程
+        filtered_courses = []
+        for course in selected_courses:
+            course_year = course.get("course_year")
+            course_semester = course.get("course_semester")
+            if course_year == "2024-2025" and course_semester == "2":
+                filtered_courses.append(course)
             # 如果selected_courses不为空，跳出循环
             if selected_courses:
                 break
