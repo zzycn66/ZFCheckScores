@@ -237,13 +237,15 @@ else:
 
             # 判断是否选中了强制推送信息
             run_log += f"{'强制推送信息' if force_push_message else '成绩已更新'}\n"
-
-            # 推送信息
+            latest_course_title = sorted_grade[0]["title"] if sorted_grade else "未知"
+              # 推送信息
             response_text = send_message(
                 token,
-                "正方教务管理系统成绩推送",
+                f"{latest_course_title}科目成绩已更新",  # 动态标题
                 grades_updated_push_integrated_send_info,
             )
+          
+    
             # 输出响应内容
             run_log += f"{response_text}"
         else:
