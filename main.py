@@ -237,14 +237,27 @@ else:
 
             # 判断是否选中了强制推送信息
             run_log += f"{'强制推送信息' if force_push_message else '成绩已更新'}\n"
-            latest_course_title = sorted_grade[0]["title"] if sorted_grade else "未知"
+            
               # 推送信息
+            # 成绩更新推送
+            # 先获取排序后的成绩列表
+            sorted_grade = get_grade(student_client, output_type="grade")  # 获取原始成绩列表
+            # 对成绩列表按提交时间排序（与get_grade.py中逻辑一致）
+            sorted_grade = sorted(
+                sorted_grade,
+                key=lambda x: (
+                    x["submission_time"] if x["submission_time"] else "1970-01-01 00:00:00"
+                ),
+                reverse=True,
+            )
+            # 获取最新更新的课程名称
+            latest_course_title = sorted_grade[0]["title"] if sorted_grade else "未知"
             response_text = send_message(
                 token,
                 f"{latest_course_title}科目成绩已更新",  # 动态标题
                 grades_updated_push_integrated_send_info,
             )
-          
+           
     
             # 输出响应内容
             run_log += f"{response_text}"
